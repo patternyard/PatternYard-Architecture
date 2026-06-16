@@ -29,6 +29,7 @@ export default defineConfig({
       title: "PatternYard Architecture",
       description:
         "System architecture, operations runbooks, and reference for the PatternYard platform.",
+      customCss: ["./src/styles/diagrams.css"],
       tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 3 },
       social: [
         {

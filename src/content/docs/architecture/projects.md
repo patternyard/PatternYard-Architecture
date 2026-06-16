@@ -35,6 +35,7 @@ editor -> docs: PatternYard-Docs
 
 libs: Build-time libraries {
   style.fill: "#e7f5e1"
+  grid-columns: 2
   vm: PatternYard-Vm
   blocks: PatternYard-Blocks
   render: PatternYard-Render
