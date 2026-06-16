@@ -19,12 +19,13 @@ one backend API, two content services, and a docs site. Everything is wired toge
 through environment variables — there are no hardcoded cross-service URLs left.
 
 ```d2
-direction: right
+direction: down
 
 user: Browser {shape: person}
 
 cloud: patternyard.dev {
   style.fill: "#f4f6fb"
+  grid-columns: 3
 
   home: Home\n(apex + www) {style.fill: "#dbeafe"}
   editor: Studio / Editor\nstudio. {style.fill: "#dbeafe"}
@@ -39,6 +40,7 @@ cloud: patternyard.dev {
 
 store: Storage {
   style.fill: "#f4f6fb"
+  grid-columns: 2
   blob: Vercel Blob
   db: Database +\nRedis (sessions/cache)
 }

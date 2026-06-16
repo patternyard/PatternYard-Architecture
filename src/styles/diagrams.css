@@ -1,0 +1,35 @@
+/* Diagram readability overrides for astro-d2 output.
+
+   astro-d2 emits each diagram as a bare <img src="/d2/..." width=… height=…>
+   placed *directly* inside `.sl-markdown-content` (not wrapped in a <p>). The
+   SVGs have no intrinsic size, so without the width attribute the browser falls
+   back to 300px; and Starlight's ~45rem prose column otherwise constrains wide
+   system maps so their labels become tiny.
+
+   Strategy: let each diagram break out of the narrow reading column to the full
+   content width, render at its natural pixel width (from the width attribute),
+   and fall back to horizontal scroll only when it is genuinely wider than the
+   available space. */
+
+.sl-markdown-content img[src^="/d2/"] {
+  /* A subtle frame so each diagram reads as a distinct figure. */
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.5rem;
+  background: var(--sl-color-white);
+  padding: 1rem;
+}
+
+/* Break the diagram out of the reading column to use the full main-content
+   width (capped near the viewport). The width="…" attribute supplies the
+   diagram's natural pixel width; max-width caps the breakout and height:auto
+   scales it proportionally. Applied to the <img> directly since astro-d2 does
+   not wrap it in a paragraph. */
+.sl-markdown-content > img[src^="/d2/"] {
+  display: block;
+  box-sizing: border-box;
+  /* Render at natural width but never wider than the breakout cap. */
+  max-width: 88vw;
+  height: auto;
+  /* Pull symmetrically beyond the narrow column edges. */
+  margin-inline: calc(50% - min(50%, 44vw));
+}
