@@ -1,0 +1,19 @@
+# build output
+dist/
+.astro/
+
+# astro-d2 generated diagram SVGs (regenerated from .d2 fences on every build)
+public/d2/
+
+# dependencies
+node_modules/
+
+# environment
+.env
+.env.production
+.env.development.local
+
+# os / editor
+.DS_Store
+*.log
+.vercel

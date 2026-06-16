@@ -1,0 +1,88 @@
+---
+title: What is PatternYard
+description: A high-level map of the PatternYard platform — the projects, how they connect, and where the boundaries are.
+---
+
+PatternYard is a self-hosted block-coding platform — an independent instance of the
+PenguinMod/Scratch lineage, running entirely on our own infrastructure under
+`patternyard.dev`. It is not one app; it is a small constellation of deployed services
+plus a larger set of supporting libraries.
+
+These docs are the **source of truth for how it all fits together**: which project owns
+what, how requests flow between the editor, the home site, and the backend, and how to
+change things safely.
+
+## The system at a glance
+
+The platform splits into three deployed user-facing surfaces (home, editor, packager),
+one backend API, two content services, and a docs site. Everything is wired together
+through environment variables — there are no hardcoded cross-service URLs left.
+
+```d2
+direction: right
+
+user: Browser {shape: person}
+
+cloud: patternyard.dev {
+  style.fill: "#f4f6fb"
+
+  home: Home\n(apex + www) {style.fill: "#dbeafe"}
+  editor: Studio / Editor\nstudio. {style.fill: "#dbeafe"}
+  packager: Packager\npackager. {style.fill: "#dbeafe"}
+
+  api: Backend API\napi. {style.fill: "#fde7c9"}
+
+  ext: Extensions\nextensions. {style.fill: "#e7f5e1"}
+  docs: Docs\ndocs. {style.fill: "#e7f5e1"}
+  library: Library / Assets\nlibrary. {style.fill: "#e7f5e1"}
+}
+
+store: Storage {
+  style.fill: "#f4f6fb"
+  blob: Vercel Blob
+  db: Database +\nRedis (sessions/cache)
+}
+
+user -> cloud.home
+user -> cloud.editor
+user -> cloud.packager
+
+cloud.editor -> cloud.api: projects, auth,\nlogin bridge
+cloud.editor -> cloud.ext: extension manifest
+cloud.editor -> cloud.library: costumes,\nsounds, backpack
+cloud.editor -> cloud.docs: help links
+cloud.editor -> cloud.home: /embed/editor\n(login state)
+
+cloud.home -> cloud.api: feeds, accounts
+cloud.packager -> cloud.api: project fetch
+
+cloud.api -> store.blob: assets
+cloud.api -> store.db: data + sessions
+cloud.library -> store.blob: mirror-on-demand
+```
+
+## The three boundaries that matter
+
+1. **Editor vs. Home are separate origins.** The editor (`studio.`) and the home site
+   (apex) are different deployments on different subdomains. This is why credentialed
+   calls need CORS allowlisting and why the editor reads login state through a
+   cross-origin `/embed/editor` bridge rather than sharing a session directly.
+
+2. **The backend is the only thing that touches storage.** The editor, home, and
+   packager never talk to the database or Blob directly — they go through the
+   `api.` backend. Storage credentials live only on the backend project.
+
+3. **Content roots are swappable.** The editor resolves five content roots
+   (`PM_API_ROOT`, `PM_EXTENSIONS_ROOT`, `PM_DOCS_ROOT`, `PM_LIBRARY_ROOT`,
+   `PM_ASSET_CDN_ROOT`) at build time. They point at our subdomains now, but the code
+   defaults stay upstream so the fork remains mergeable.
+
+## Where to go next
+
+- **[Projects & repos](/architecture/projects/)** — the full inventory of what each
+  repo and Vercel project is.
+- **[Domains & routing](/architecture/domains/)** — the subdomain map.
+- **[The editor login bridge](/architecture/editor-bridge/)** — how cross-origin login
+  state syncs.
+- **[Making changes](/operations/making-changes/)** — the two deploy loops and how to
+  use them.
