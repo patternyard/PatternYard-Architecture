@@ -22,7 +22,10 @@ to **patternyard.dev** (or another PatternYard-owned origin).
 If you find an app that still reaches `*.penguinmod.com` at runtime, that is a
 **bug**. Close it by standing up — or pointing at — the PatternYard equivalent.
 
-- **Do** default every host to its `patternyard.dev` equivalent.
+- **Do** make every PatternYard *deployment* resolve each host to its
+  `patternyard.dev` equivalent — through configuration (env vars) and the
+  runtime defaults baked into PatternYard-owned config, not by rewriting upstream
+  defaults in tracked engine source (see the two axes below).
 - **Do** stand up the missing PatternYard service if the equivalent host does not
   serve yet.
 - **Do not** "fall back" to the upstream host when an environment variable is
