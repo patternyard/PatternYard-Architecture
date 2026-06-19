@@ -1,0 +1,15 @@
+name: "No upstream hosts"
+description: >-
+  Fail if any upstream (penguinmod-owned) runtime host appears in tracked files
+  outside the repo's allowlist. Enforces PatternYard runtime independence.
+inputs:
+  allow-file:
+    description: "Path (in the consumer repo) to the gitignore-style allowlist file."
+    required: false
+    default: ".penguinmod-host-allowlist"
+runs:
+  using: composite
+  steps:
+    - name: Scan tracked files for upstream hosts
+      shell: bash
+      run: node "${{ github.action_path }}/check.mjs" --allow-file "${{ inputs.allow-file }}"

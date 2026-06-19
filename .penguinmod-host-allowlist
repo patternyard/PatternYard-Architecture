@@ -1,0 +1,15 @@
+# Files exempt from the "no upstream hosts" CI guard.
+# gitignore-style path globs; one per line. See .github/actions/no-upstream-hosts/README.md
+#
+# Rule of thumb: only tooling that intentionally references the upstream host in
+# order to REWRITE it, migration provenance, and human documentation belong here.
+# Application/runtime code must never be allowlisted.
+
+# The guard's own scanner contains the host pattern it searches for.
+.github/actions/no-upstream-hosts/**
+
+# Documentation legitimately names the upstream project (PenguinMod) and its hosts
+# when explaining the migration and the runtime-independence success criterion.
+**/*.md
+**/*.mdx
+src/content/**
