@@ -1,0 +1,17 @@
+name: No upstream hosts
+
+# Enforces PatternYard runtime independence: no upstream PenguinMod-owned runtime
+# hosts may land in tracked files outside the allowlist. See the action README.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  no-upstream-hosts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # This repo hosts the action, so reference it by local path. Other repos
+      # use: patternyard/PatternYard-Architecture/.github/actions/no-upstream-hosts@main
+      - uses: ./.github/actions/no-upstream-hosts
