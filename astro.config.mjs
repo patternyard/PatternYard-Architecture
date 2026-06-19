@@ -43,6 +43,7 @@ export default defineConfig({
           label: "Overview",
           items: [
             { label: "What is PatternYard", slug: "index" },
+            { label: "Success criteria", slug: "success-criteria" },
             { label: "How to use these docs", slug: "using-these-docs" },
           ],
         },
