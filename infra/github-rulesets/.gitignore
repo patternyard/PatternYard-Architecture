@@ -1,0 +1,10 @@
+# Terraform working files — never commit state (it can contain metadata) or local config
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+*.tfvars
+!example.tfvars
+crash.log
+override.tf
+override.tf.json
